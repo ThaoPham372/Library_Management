@@ -4,7 +4,9 @@ import java.util.Scanner;
 public class LibraryAppMenu {
     private static final Scanner scanner = new Scanner(System.in);
     private static final LibraryManager libraryManager = new LibraryManager();
-
+    /**
+     * Displays the main menu of the library management system.
+     */
     public static void displayMainMenu() {
         int choice;
         do {
@@ -29,7 +31,9 @@ public class LibraryAppMenu {
         } while (choice != 5);
         scanner.close();
     }
-
+    /**
+     * Displays the book management menu.
+     */
     private static void manageBooks() {
         int choice;
         do {
@@ -57,7 +61,9 @@ public class LibraryAppMenu {
             }
         } while (choice != 7);
     }
-
+    /**
+     * Displays the user management menu.
+     */
     private static void manageUsers() {
         int choice;
         do {
@@ -81,7 +87,9 @@ public class LibraryAppMenu {
             }
         } while (choice != 5);
     }
-
+    /**
+     * Displays the borrow and return books menu.
+     */
     private static void borrowReturnBooks() {
         int choice;
         do {
@@ -101,7 +109,9 @@ public class LibraryAppMenu {
             }
         } while (choice != 3);
     }
-
+    /**
+     * Displays the statistics and reports menu.
+     */
     private static void viewStatistics() {
         int choice;
         do {
@@ -123,7 +133,6 @@ public class LibraryAppMenu {
             }
         } while (choice != 4);
     }
-
     //  UTILITY FUNCTION
     private static int getUserChoice() {
         try {
@@ -137,6 +146,9 @@ public class LibraryAppMenu {
     }
 
     // BOOK FUNCTIONS
+    /**
+     * Adds a new book to the library
+     */
     private static void addBook() {
         String title = InvalidInputHandle.getValidString("Enter book title: ");
         String author = InvalidInputHandle.getValidString("Enter book author: ");
@@ -147,7 +159,9 @@ public class LibraryAppMenu {
         libraryManager.addBook(new Book(title, author, genre, quantity, borrowedCount));
         System.out.println("Book added successfully!");
     }
-
+    /**
+     * Updates details of an existing book
+     */
     private static void updateBook() {
         String title = InvalidInputHandle.getValidString("Enter book title: ");
         String author = InvalidInputHandle.getValidString("Enter book author: ");
@@ -158,13 +172,17 @@ public class LibraryAppMenu {
         libraryManager.updateBook(title, author, genre, quantity, borrowedCount);
         System.out.println("Book updated successfully!");
     }
-
+    /**
+     * Deletes a book from the library
+     */
     private static void deleteBook() {
         String title = InvalidInputHandle.getValidString("Enter book title: ");
         String author = InvalidInputHandle.getValidString("Enter book author: ");
         libraryManager.deleteBook(title, author);
     }
-
+    /**
+     * Handles borrowing a book
+     */
     private static void borrowBook() {
         String title = InvalidInputHandle.getValidString("Enter book title: ");
         String author = InvalidInputHandle.getValidString("Enter book author: ");
@@ -173,7 +191,9 @@ public class LibraryAppMenu {
 
         libraryManager.borrowBook(title, author, email, name);
     }
-
+    /**
+     * Handles returning a borrowed book
+     */
     private static void returnBook() {
         String title = InvalidInputHandle.getValidString("Enter book title: ");
         String author = InvalidInputHandle.getValidString("Enter book author: ");
@@ -182,25 +202,33 @@ public class LibraryAppMenu {
 
         libraryManager.returnBook(title, author, email, name);
     }
-
+    /**
+     * Filters books by genre and displays the result
+     */
     private static void filterBooksByGenre() {
         String genre = InvalidInputHandle.getValidString("Enter new genre: ");
         List<Book> books = libraryManager.filterBookByGenre(genre);
         books.forEach(System.out::println);
     }
-
+    /**
+     * Displays the most borrowed books
+     */
     private static void getMostPopularBooks() {
         int top = InvalidInputHandle.getPositiveInt("Enter number of top books to display: ");
         scanner.nextLine();
         List<Book> books = libraryManager.getMostPopularBook(top);
         books.forEach(System.out::println);
     }
-
+    /**
+     * Sorts and displays books by borrow count in descending order
+     */
     private static void sortBooksByBorrowedCount() {
         List<Book> sortedBooks = libraryManager.sortBookByBorrowedCountDescending();
         sortedBooks.forEach(System.out::println);
     }
-
+    /**
+     *  Searches for books by title, author, or genre
+     */
     private static void searchBookByTitleAuthorGenre() {
         String title = InvalidInputHandle.getValidInput("Enter book title (or press Enter to skip): ");
         String author = InvalidInputHandle.getValidInput("Enter book author (or press Enter to skip): ");
@@ -215,6 +243,9 @@ public class LibraryAppMenu {
             foundBooks.forEach(System.out::println);
         }
     }
+    /**
+     * Registers a new user
+     */
     private static void registerUser() {
         String id = InvalidInputHandle.getValidID("Enter user ID:" );
         String name = InvalidInputHandle.getValidString("Enter user name: ");
@@ -227,7 +258,9 @@ public class LibraryAppMenu {
         libraryManager.registerUser(newUser);
         System.out.println("User registration request processed.");
     }
-
+    /**
+     * Updates user information
+     */
     private static void updateUser() {
         String name = InvalidInputHandle.getValidString("Enter user name to update: ");
         String email = InvalidInputHandle.getValidEmail("Enter user email to update: ");
@@ -238,13 +271,14 @@ public class LibraryAppMenu {
 
         System.out.println("User update request processed.");
     }
-
+    /**
+     * Deletes a user from the system
+     */
     private static void deleteUser() {
         String email = InvalidInputHandle.getValidEmail("Enter user email to delete: ");
 
         libraryManager.deleteUser(email);
         System.out.println("User deletion request processed.");
     }
-
 }
 
