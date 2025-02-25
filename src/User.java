@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class User extends Person{
+public class User extends Person {
     private List<String> borrowBooks;
     private int maxBookAllowed = 5;
 
@@ -33,3 +33,4 @@ public class User extends Person{
         this.maxBookAllowed = maxBookAllowed;
     }
 }
+
