@@ -1,14 +1,23 @@
+/**
+ * Utility class for handling invalid user inputs.
+ */
 import java.util.Scanner;
-
 public class InvalidInputHandle {
     private static final Scanner scanner = new Scanner(System.in);
-
-    // Kiểm tra xem chuỗi có chứa số không
+    /**
+     * hecks if a string contains any numeric characters.
+     * @param str String
+     * @return
+     */
     public static boolean containsNumber(String str) {
         return str.matches(".*\\d.*");
     }
-
-    // Nhập chuỗi không rỗng và không chứa số (dùng cho title, author, genre)
+    /**
+     * Prompts the user to enter a valid non-empty string that does not contain numbers.
+     * Used for title, author, and genre inputs.
+     *  @param prompt String
+     * @return
+     */
     public static String getValidString(String prompt) {
         String input;
         do {
@@ -20,8 +29,12 @@ public class InvalidInputHandle {
         } while (input.isEmpty() || containsNumber(input));
         return input;
     }
-
-    // Nhập số nguyên dương (dùng cho quantity)
+    /**
+     * Prompts the user to enter a positive integer.
+     * Used for quantity input.
+     * @param prompt String
+     * @return
+     */
     public static int getPositiveInt(String prompt) {
         int value;
         do {
@@ -39,8 +52,12 @@ public class InvalidInputHandle {
         } while (value <= 0);
         return value;
     }
-
-    // Nhập số nguyên không âm (dùng cho borrowed count)
+    /**
+     *  Prompts the user to enter a non-negative integer.
+     *  Used for borrowed count input.
+     * @param prompt String
+     * @return
+     */
     public static int getNonNegativeInt(String prompt) {
         int value;
         do {
@@ -58,12 +75,19 @@ public class InvalidInputHandle {
         } while (value < 0);
         return value;
     }
-    // Kiểm tra email có hợp lệ không
+    /**
+     * Checks if the given email is in a valid format.
+     * @param email String
+     * @return
+     */
     public static boolean isValidEmail(String email) {
         return email.matches("^[\\w.-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,6}$");
     }
-
-    // Nhập email hợp lệ
+    /**
+     * Prompts the user to enter a valid email address.
+     * @param prompt String
+     * @return
+     */
     public static String getValidEmail(String prompt) {
         String email;
         do {
@@ -75,8 +99,11 @@ public class InvalidInputHandle {
         } while (!isValidEmail(email));
         return email;
     }
-
-    // Nhập số điện thoại hợp lệ (10 số)
+    /**
+     * Prompts the user to enter a valid phone number (10 digits only).
+     * @param prompt String
+     * @return
+     */
     public static String getValidPhone(String prompt) {
         String phone;
         do {
@@ -88,8 +115,11 @@ public class InvalidInputHandle {
         } while (!phone.matches("\\d{10}"));
         return phone;
     }
-
-    // Nhập mật khẩu (ít nhất 6 ký tự)
+    /**
+     * Prompts the user to enter a valid password (at least 6 characters).
+     * @param prompt String
+     * @return
+     */
     public static String getValidPassword(String prompt) {
         String password;
         do {
@@ -101,8 +131,11 @@ public class InvalidInputHandle {
         } while (password.length() < 6);
         return password;
     }
-
-    // Nhập ID (Chỉ chứa chữ & số, ít nhất 4 ký tự)
+    /**
+     * Prompts the user to enter a valid ID (at least 4 alphanumeric characters).
+     * @param prompt String
+     * @return
+     */
     public static String getValidID(String prompt) {
         String id;
         do {
@@ -114,6 +147,12 @@ public class InvalidInputHandle {
         } while (!id.matches("[a-zA-Z0-9]{4,}"));
         return id;
     }
+    /**
+     * Prompts the user to enter a valid input (optional).
+     * Allows alphanumeric characters, spaces, and basic punctuation.
+     * @param prompt String
+     * @return
+     */
     public static String getValidInput(String prompt) {
         while (true) {
             System.out.print(prompt);

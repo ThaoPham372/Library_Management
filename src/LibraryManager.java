@@ -6,24 +6,35 @@ import java.util.stream.Collectors;
 public class LibraryManager implements Manageable {
     private List<Book> books;
     private List<User> users;
-
-    // Constructor
-
+    /**
+     * Constructor
+     * @param books List
+     * @param users List
+     */
     public LibraryManager(List<Book> books, List<User> users) {
         this.books = new ArrayList<>();
         this.users = new ArrayList<>();
     }
-
     public LibraryManager() {
         this.books = new ArrayList<>();
     }
-
+    /**
+     * Adds a new book to the library.
+     * @param book Book
+     */
     @Override
     public void addBook(Book book) {
         books.add(book);
         System.out.println("Book added: " + book);
     }
-
+    /**
+     * Updates book details in the library.
+     * @param title String
+     * @param author String
+     * @param newGenre String
+     * @param newQuantity int
+     * @param newBorrowedCount int
+     */
     @Override
     public void updateBook(String title, String author, String newGenre, int newQuantity, int newBorrowedCount) {
         if (title == null || title.isEmpty() || author == null || author.isEmpty()) {
@@ -45,19 +56,32 @@ public class LibraryManager implements Manageable {
         }
         System.out.println("Book not found");
     }
-
+    /**
+     * Deletes a book from the library.
+     * @param title String
+     * @param author String
+     */
     @Override
     public void deleteBook(String title, String author) {
         boolean removeBook = books.removeIf(book -> book.getTitle().equals(title) && book.getAuthor().equals(author));
         System.out.println(removeBook ? "Book deleted successfully" : "Book not found");
     }
-
+    /**
+     * Registers a new user.
+     * @param user User
+     */
     @Override
     public void registerUser(User user) {
         users.add(user);
         System.out.println("User registered: " + user);
     }
-
+    /**
+     * Updates user details.
+     * @param email String
+     * @param name String
+     * @param newPhone String
+     * @param newPassword String
+     */
     @Override
     public void updateUser(String email, String name, String newPhone, String newPassword) {
         if (email == null || email.isEmpty() || name == null || name.isEmpty()) {
@@ -78,13 +102,22 @@ public class LibraryManager implements Manageable {
         }
         System.out.println("User not found");
     }
-
+    /**
+     * Deletes a user from the system.
+     * @param email String
+     */
     @Override
     public void deleteUser(String email) {
         boolean removeUser = users.removeIf(user -> user.getEmail().equals(email));
         System.out.println(removeUser ? "User deleted successfully" : "User not found");
     }
-
+    /**
+     *  Handles borrowing a book
+     * @param title String
+     * @param author String
+     * @param email String
+     * @param name String
+     */
     @Override
     public void borrowBook(String title, String author, String email, String name) {
         if (title == null || title.isEmpty() || author == null || author.isEmpty() ||
@@ -114,6 +147,13 @@ public class LibraryManager implements Manageable {
             System.out.println("Book is out of stock!");
         }
     }
+    /**
+     *  Handles returning a book.
+     * @param title String
+     * @param author String
+     * @param email String
+     * @param name String
+     */
     @Override
     public void returnBook(String title, String author, String email, String name) {
         if (title == null || title.isEmpty() || author == null || author.isEmpty() ||
@@ -135,18 +175,31 @@ public class LibraryManager implements Manageable {
             System.out.println("Book is out of stock!");
         }
     }
-
+    /**
+     * Checks if a book is available in the library.
+     * @param title String
+     * @param author String
+     * @return
+     */
     @Override
     public boolean isBookAvailable(String title, String author) {
         Book book = findBookByTitleAndAuthor(title, author);
         return book != null && book.getQuantity() > 0;
     }
-
+    /**
+     * Checks if a user can borrow more books.
+     * @param user String
+     * @return
+     */
     @Override
     public boolean canBorrowMoreBooks(User user) {
         return user.getBorrowBooks().size() < user.getMaxBookAllowed();
     }
-
+    /**
+     * Filters books by genre.
+     * @param genre String
+     * @return
+     */
     @Override
     public List<Book> filterBookByGenre(String genre) {
         if(genre == null || genre.isEmpty()) {
@@ -157,13 +210,23 @@ public class LibraryManager implements Manageable {
                 .filter(book -> book.getGenre().equalsIgnoreCase(genre))
                 .collect(Collectors.toList());
     }
+    /**
+     * Sorts books by the number of times they have been borrowed in descending order.
+     * @return
+     */
     @Override
     public List<Book> sortBookByBorrowedCountDescending() {
         return books.stream()
                 .sorted(Comparator.comparingInt(Book::getBorrowCount).reversed())
                 .collect(Collectors.toList());
     }
-
+    /**
+     * Finds a book by its title, author, Genre
+     * @param title String
+     * @param author String
+     * @param genre String
+     * @return
+     */
     @Override
     public List<Book> searchBookByTitleAuthorGenre(String title, String author, String genre) {
         if ((title == null || title.isEmpty()) &&
@@ -181,7 +244,10 @@ public class LibraryManager implements Manageable {
         }
         return result;
     }
-
+    /**
+     * Counts the total number of books available in the library.
+     * @return
+     */
     @Override
     public int countTotalBook() {
         if (books.isEmpty()){
@@ -194,7 +260,11 @@ public class LibraryManager implements Manageable {
         }
         return total;
     }
-
+    /**
+     * Finds the most borrowed books in the library.
+     * @param top int
+     * @return
+     */
     @Override
     public List<Book> getMostPopularBook(int top) {
         if (top <= 0) {
@@ -210,30 +280,28 @@ public class LibraryManager implements Manageable {
                 .limit(top)
                 .collect(Collectors.toList());
     }
-
-    public List<Book> findMostBorrowedBooks() {
-        int maxBorrowCount = books.stream()
-                .mapToInt(Book::getBorrowCount)
-                .max()
-                .orElse(0);
-
-        return books.stream()
-                .filter(book -> book.getBorrowCount() == maxBorrowCount)
-                .collect(Collectors.toList());
-    }
-
+    /**
+     * Prints all books in the library.
+     */
     public void printBooks() {
         for (Book book : books) {
             System.out.println(book);
         }
     }
-
+    /**
+     * Prints all registered users in the library system.
+     */
     public void printUsers() {
         for (User user : users) {
             System.out.println(user);
         }
     }
-
+    /**
+     * Finds a user by their email and name.
+     * @param email String
+     * @param name String
+     * @return
+     */
     private User findUserByEmailAndName(String email, String name) {
         for (User user : users) {
             if (user.getEmail().equals(email) && user.getName().equals(name)) {
@@ -242,6 +310,12 @@ public class LibraryManager implements Manageable {
         }
         return null;
     }
+    /**
+     * Finds a book by its title and author.
+     * @param title String
+     * @param author String
+     * @return
+     */
     private Book findBookByTitleAndAuthor(String title, String author) {
         for (Book book : books) {
             if (book.getTitle().equals(title) && book.getAuthor().equals(author)) {
@@ -249,6 +323,5 @@ public class LibraryManager implements Manageable {
             }
         }
         return null;
-
     }
 }
