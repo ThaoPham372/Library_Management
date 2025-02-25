@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class User extends Person {
@@ -11,7 +12,7 @@ public class User extends Person {
     // Constructor
     public User(String id, String name, String email, String phone, String password, List<String> borrowBooks, int maxBookAllowed) {
         super(id, name, email, phone, password);
-        this.borrowBooks = borrowBooks;
+        this.borrowBooks = new ArrayList<>();
         this.maxBookAllowed = maxBookAllowed;
     }
 
@@ -31,6 +32,20 @@ public class User extends Person {
 
     public void setMaxBookAllowed(int maxBookAllowed) {
         this.maxBookAllowed = maxBookAllowed;
+    }
+    // Mehtod
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "borrowBooks=" + borrowBooks +
+                ", maxBookAllowed=" + maxBookAllowed +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
 

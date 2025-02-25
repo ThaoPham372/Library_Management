@@ -27,6 +27,7 @@ public class InvalidInputHandle {
                 System.out.println("Invalid input! It cannot be empty or contain numbers.");
             }
         } while (input.isEmpty() || containsNumber(input));
+
         return input;
     }
     /**

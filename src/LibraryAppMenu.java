@@ -170,7 +170,6 @@ public class LibraryAppMenu {
         int borrowedCount = InvalidInputHandle.getNonNegativeInt("Enter new borrowed count: ");
 
         libraryManager.updateBook(title, author, genre, quantity, borrowedCount);
-        System.out.println("Book updated successfully!");
     }
     /**
      * Deletes a book from the library
@@ -253,21 +252,19 @@ public class LibraryAppMenu {
         String phone = InvalidInputHandle.getValidPhone( "Enter phone: ");
         String password = InvalidInputHandle.getValidPassword("Enter password: ");
 
-        User newUser = new User(id, name, email, phone, password );
-
-        libraryManager.registerUser(newUser);
+        libraryManager.registerUser(new User (id, name, email, phone, password));
         System.out.println("User registration request processed.");
     }
     /**
      * Updates user information
      */
     private static void updateUser() {
-        String name = InvalidInputHandle.getValidString("Enter user name to update: ");
         String email = InvalidInputHandle.getValidEmail("Enter user email to update: ");
         String newName = InvalidInputHandle.getValidString("Enter new name: ");
-        String newEmail = InvalidInputHandle.getValidEmail("Enter new email: ");
+        String newPhone = InvalidInputHandle.getValidPhone("Enter new phone: ");
+        String newPassword = InvalidInputHandle.getValidPassword("Enter new password: ");
 
-        libraryManager.updateUser(name, email, newName, newEmail);
+        libraryManager.updateUser(email, newName, newPhone, newPassword);
 
         System.out.println("User update request processed.");
     }

@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class LibraryManager implements Manageable {
     private List<Book> books;
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
     /**
      * Constructor
      * @param books List
@@ -18,6 +18,7 @@ public class LibraryManager implements Manageable {
     public LibraryManager() {
         this.books = new ArrayList<>();
     }
+
     /**
      * Adds a new book to the library.
      * @param book Book
@@ -37,16 +38,8 @@ public class LibraryManager implements Manageable {
      */
     @Override
     public void updateBook(String title, String author, String newGenre, int newQuantity, int newBorrowedCount) {
-        if (title == null || title.isEmpty() || author == null || author.isEmpty()) {
-            System.out.println("Invalid input. Title or author are empty");
-            return;
-        }
-        if (newQuantity < 0 || newBorrowedCount < 0) {
-            System.out.println("Invalid input. Quantity or Borrowed count cannot be negative");
-            return;
-        }
         for (Book book : books) {
-            if (book.getTitle().equals(title) && book.getAuthor().equals(author)) {
+            if (book.getTitle().equalsIgnoreCase(title) && book.getAuthor().equalsIgnoreCase(author)) {
                 book.setGenre(newGenre);
                 book.setQuantity(newQuantity);
                 book.setBorrowCount(newBorrowedCount);
@@ -63,7 +56,7 @@ public class LibraryManager implements Manageable {
      */
     @Override
     public void deleteBook(String title, String author) {
-        boolean removeBook = books.removeIf(book -> book.getTitle().equals(title) && book.getAuthor().equals(author));
+        boolean removeBook = books.removeIf(book -> book.getTitle().equalsIgnoreCase(title) && book.getAuthor().equalsIgnoreCase(author));
         System.out.println(removeBook ? "Book deleted successfully" : "Book not found");
     }
     /**
@@ -78,24 +71,17 @@ public class LibraryManager implements Manageable {
     /**
      * Updates user details.
      * @param email String
-     * @param name String
+     * @param newName String
      * @param newPhone String
      * @param newPassword String
      */
     @Override
-    public void updateUser(String email, String name, String newPhone, String newPassword) {
-        if (email == null || email.isEmpty() || name == null || name.isEmpty()) {
-            System.out.println("Invalid input. Email or name are empty");
-            return;
-        }
-        if (newPhone == null || newPhone.isEmpty() || newPassword == null || newPassword.isEmpty()) {
-            System.out.println("Invalid input. Phone or password are empty");
-            return;
-        }
+    public void updateUser(String email, String newName, String newPhone, String newPassword) {
         for (User user : users) {
-            if (user.getEmail().equals(email) && user.getName().equals(name) && user.getPassword().equals(newPassword)) {
+                if (user.getEmail().trim().equalsIgnoreCase(email.trim())) {
                 user.setPhone(newPhone);
                 user.setPassword(newPassword);
+                user.setName(newName);
                 System.out.println("User updated: " + user);
                 return;
             }
@@ -120,11 +106,6 @@ public class LibraryManager implements Manageable {
      */
     @Override
     public void borrowBook(String title, String author, String email, String name) {
-        if (title == null || title.isEmpty() || author == null || author.isEmpty() ||
-                email == null || email.isEmpty() || name == null || name.isEmpty()) {
-            System.out.println("Invalid input! Title, author, email, and name cannot be empty.");
-            return;
-        }
         User user = findUserByEmailAndName(email, name);
         Book book = findBookByTitleAndAuthor(title, author);
 
@@ -156,11 +137,6 @@ public class LibraryManager implements Manageable {
      */
     @Override
     public void returnBook(String title, String author, String email, String name) {
-        if (title == null || title.isEmpty() || author == null || author.isEmpty() ||
-                email == null || email.isEmpty() || name == null || name.isEmpty()) {
-            System.out.println("Invalid input! Title, author, email, and name cannot be empty.");
-            return;
-        }
         User user = findUserByEmailAndName(email, name);
         Book book = findBookByTitleAndAuthor(title, author);
 
@@ -193,6 +169,9 @@ public class LibraryManager implements Manageable {
      */
     @Override
     public boolean canBorrowMoreBooks(User user) {
+        if (user.getBorrowBooks() == null) {
+            user.setBorrowBooks(new ArrayList<>());
+        }
         return user.getBorrowBooks().size() < user.getMaxBookAllowed();
     }
     /**
@@ -229,11 +208,6 @@ public class LibraryManager implements Manageable {
      */
     @Override
     public List<Book> searchBookByTitleAuthorGenre(String title, String author, String genre) {
-        if ((title == null || title.isEmpty()) &&
-                (author == null || author.isEmpty()) &&
-                (genre == null || genre.isEmpty())){
-                System.out.println("Please provide at least one search criteria.");
-        }
         List<Book> result = new ArrayList<>();
         for (Book book : books) {
                       if ((title == null || title.isEmpty() || book.getTitle().equalsIgnoreCase(title)) &&
@@ -267,10 +241,6 @@ public class LibraryManager implements Manageable {
      */
     @Override
     public List<Book> getMostPopularBook(int top) {
-        if (top <= 0) {
-            System.out.println("Invalid input! The number of top books must be greater than 0.");
-            return new ArrayList<>();
-        }
         if (books.isEmpty()) {
             System.out.println("No books available in the library.");
             return new ArrayList<>();
@@ -304,7 +274,7 @@ public class LibraryManager implements Manageable {
      */
     private User findUserByEmailAndName(String email, String name) {
         for (User user : users) {
-            if (user.getEmail().equals(email) && user.getName().equals(name)) {
+            if (user.getEmail().equals(email) && user.getName().equalsIgnoreCase(name)) {
                 return user;
             }
         }
@@ -318,7 +288,7 @@ public class LibraryManager implements Manageable {
      */
     private Book findBookByTitleAndAuthor(String title, String author) {
         for (Book book : books) {
-            if (book.getTitle().equals(title) && book.getAuthor().equals(author)) {
+            if (book.getTitle().equalsIgnoreCase(title) && book.getAuthor().equalsIgnoreCase(author)) {
                 return book;
             }
         }
